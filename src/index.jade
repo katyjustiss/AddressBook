@@ -8,9 +8,39 @@ html(lang="en", ng-app="addressBook")
     link(rel="stylesheet", href="lib/build.css")
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
     link(rel="stylesheet", href="/css/main.css")
-  body
+    link(href='http://fonts.googleapis.com/css?family=Vollkorn:400,700', rel='stylesheet', type='text/css')
+  body(ng-controller="Main as main")
     .container
-
+      form(name="newContactForm", ng-submit="newContactForm.$valid && main.addNewContact()")
+        .form-group.input-lg
+          label Name
+          input(type="text", placeholder="Bob", ng-model="main.newContact.name", required)
+        .form-group.input-lg
+          label Email
+          input(type="email", placeholder="bob@abc.com", ng-model="main.newContact.email", required)
+        .form-group.input-lg
+          label Twitter
+          input(type="text", placeholder="@bob", ng-model="main.newContact.twitter", required)
+        input.btn.btn-danger(type="submit", value="Add a contact", ng-disabled="newContactForm.$invalid")
+      table.table
+        thead
+          tr
+            th
+            th Name
+            th Email
+            th Twitter
+        tbody
+          tr(ng-repeat="contact in main.people | orderBy:'name' | filter:query")
+            td
+              button(ng-click="main.removeAddress(contact)") X
+            td
+              {{contact.name}}
+            td: a(href="mailto:{{contact.email}}")
+              {{contact.email}}
+            td: a(href="http://twitter.com/{{contact.twitter}}", target="_blank")
+              {{contact.twitter}}
+      label Search
+      input(placeholder="Search Your Contacts", ng-model="query")
 
     script(src="lib/build.js")
     script(src="js/main.js")
