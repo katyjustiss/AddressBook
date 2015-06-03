@@ -5,42 +5,63 @@ html(lang="en", ng-app="addressBook")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title Address Book
-    link(rel="stylesheet", href="lib/build.css")
-    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/lib/build.css")
+    //- link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
     link(rel="stylesheet", href="/css/main.css")
     link(href='http://fonts.googleapis.com/css?family=Vollkorn:400,700', rel='stylesheet', type='text/css')
   body(ng-controller="Main as main")
     .container
-      form(name="newContactForm", ng-submit="newContactForm.$valid && main.addNewContact()")
-        .form-group.input-lg
-          label Name
-          input(type="text", placeholder="Bob", ng-model="main.newContact.name", required)
-        .form-group.input-lg
-          label Email
-          input(type="email", placeholder="bob@abc.com", ng-model="main.newContact.email", required)
-        .form-group.input-lg
-          label Twitter
-          input(type="text", placeholder="@bob", ng-model="main.newContact.twitter", required)
-        input.btn.btn-danger(type="submit", value="Add a contact", ng-disabled="newContactForm.$invalid")
-      table.table
+      h1 Address Book
+      .search
+        label Search
+        input(placeholder="Enter term here", ng-model="query")
+      table.table.table-hover.table-responsive
         thead
           tr
             th
+            th Photo
             th Name
             th Email
             th Twitter
+            th Phone
         tbody
           tr(ng-repeat="contact in main.people | orderBy:'name' | filter:query")
             td
-              button(ng-click="main.removeAddress(contact)") X
+              button.btn.btn-md.btn-danger(ng-click="main.removeAddress(contact)") X
+            td: img(ng-src="{{contact.photo}}")
             td
               {{contact.name}}
             td: a(href="mailto:{{contact.email}}")
               {{contact.email}}
             td: a(href="http://twitter.com/{{contact.twitter}}", target="_blank")
               {{contact.twitter}}
-      label Search
-      input(placeholder="Search Your Contacts", ng-model="query")
+            td: a(href="tel:{{contact.phone}}")
+              {{contact.phone}}
+      .btn.btn-primary(data-toggle="modal", data-target="#modal") Open Modal
+      .modal.fade#modal
+        .modal-dialog
+          .modal-content
+            .modal-header
+              button.close(data-dismiss="modal")
+                span &times;
+              h2 New Contact
+            .modal-body
+              form(name="newContactForm", novalidate)
+                .form-group(ng-class="{'has-success': newContactForm.n.$dirty && main.newContact.name.length > 1, 'has-error': newContactForm.n.$dirty && !main.newContact.name}")
+                  label.control-label Name
+                  input.form-control(name="n", type="text", placeholder="Bob", ng-model="main.newContact.name", required)
+                .form-group(ng-class="{'has-success': newContactForm.e.$dirty && main.newContact.email, 'has-error': newContactForm.e.$dirty && !main.newContact.email}")
+                  label.control-label Email
+                  input.form-control(name="e",type="email", placeholder="bob@abc.com", ng-model="main.newContact.email", required)
+                .form-group(ng-class="{'has-success': newContactForm.t.$dirty && main.newContact.twitter.length > 1 && main.newContact.twitter[0] === '@', 'has-error': newContactForm.t.$dirty && (main.newContact.twitter.length < 2 || main.newContact.twitter[0] !== '@')}")
+                  label.control-label Twitter
+                  input.form-control(name="t", type="text", placeholder="@bob", ng-model="main.newContact.twitter", required)
+                .form-group(ng-class="{'has-success': newContactForm.p.$dirty && main.newContact.phone, 'has-error': newContactForm.p.$dirty && !main.newContact.phone}")
+                  label.control-label Phone
+                  input.form-control(name="p", type="text", placeholder="6152222222", ng-model="main.newContact.phone", required)
+            .modal-footer
+              button.btn.btn-default(data-dismiss="modal") Close
+              button.btn.btn-danger(ng-click="newContactForm.$valid && main.addNewContact()", ng-disabled="newContactForm.$invalid") Add a contact
 
     script(src="lib/build.js")
     script(src="js/main.js")

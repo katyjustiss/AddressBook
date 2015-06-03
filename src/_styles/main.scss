@@ -1,16 +1,28 @@
 body {
   font-family: Vollkorn, Georgia, Serif;
+  background: rgb(192,192,192);
 }
 
-form {
-  border: 1px solid black;
-  float: left;
-  margin: 3%;
-  padding: 3%;
+.container {
+  width: 80%;
+  margin: 2% auto;
+  background: rgba(255,255,255, 0.9);
+  border-radius: 15px;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.32);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.32);
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.32);
 }
 
-.table {
-  width: 40%;
-  margin: 3%;
+.search {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  input {
+    border-radius: 3px;
+  }
+}
+
+img {
+  max-width: 75px;
+  max-height: 75px;
 }
 
