@@ -1,29 +1,49 @@
 angular
   .module('addressBook', [])
 
-  .controller('Main', function() {
+    .filter('objToArr', function() {
+      return function(obj) {
+        if(obj) {
+          return Object
+            .keys(obj)
+            .map(function(key) {
+              obj[key]._id = key  //Getting the person obj. Adding the _id property to this object
+              return obj[key];
+          })
+        }
+      }
+    })
+
+  .controller('Main', function($http) {
     var main = this;
 
-    main.people = [
-      {name: 'Wiggles', email: 'wig@wiggles.com', twitter: '@wiggly', phone: '6155555678', photo: 'http://i.imgur.com/lVlPvCBb.jpg'},
-      {name: 'Sunshine', email: 'sun@sunny.com', twitter: '@sunny', phone: '615-123-4567', photo: 'http://i.imgur.com/EpTz5rOb.jpg'},
-      {name: 'Pumpkin', email: 'orange@pumpkin.com', twitter: '@plumpy', phone: '6152345678', photo: 'http://i.imgur.com/Z9809Jeb.jpg'},
-      {name: 'Princess', email: 'pink@princess.com', twitter: '@princess', phone: '615-666-7890', photo: 'http://i.imgur.com/PISWBXMb.jpg'},
-      {name: 'Mario', email: 'mario@plumbers.com', twitter: '@mario', phone: '6159876543', photo: 'http://i.imgur.com/w31FmCJb.jpg'}
-    ];
+    $http
+      .get('https://addressbooks.firebaseio.com/people.json')
+      .success(function (data) {
+        main.people = data;
+      })
 
     main.newContact = {};
 
     main.addNewContact = function() {
-      main.people.push(main.newContact);
-      main.newContact = {};  //clearing the form and data-binding link
-      $('#modal').modal('hide');
+      $http
+        .post('https://addressbooks.firebaseio.com/people.json', main.newContact)
+        .success(function() {
+          console.log(main.people)
+          console.log(main.newContact)
+          main.people.push(main.newContact);
+          main.newContact = {};  //clearing the form and data-binding link
+          $('#modal').modal('hide');
+        });
     };
 
-    main.removeAddress = function(contact) {
-      var index = main.people.indexOf(contact);
-      main.people.splice(index, 1);
-    }
+    main.removeAddress = function(id) {
+      $http
+        .delete(`https://addressbooks.firebaseio.com/people/${id}.json`)
+        .success(function() {
+          delete main.people[id]
+      });
+    };
   });
 
 

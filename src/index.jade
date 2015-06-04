@@ -25,9 +25,9 @@ html(lang="en", ng-app="addressBook")
             th Twitter
             th Phone
         tbody
-          tr(ng-repeat="contact in main.people | orderBy:'name' | filter:query")
+          tr(ng-repeat="(id, contact) in main.people | objToArr | orderBy:'name' | filter:query")
             td
-              button.btn.btn-md.btn-danger(ng-click="main.removeAddress(contact)") X
+              button.btn.btn-md.btn-danger(ng-click="main.removeAddress(contact._id)") X
             td: img(ng-src="{{contact.photo}}")
             td
               {{contact.name}}
