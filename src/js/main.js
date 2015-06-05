@@ -1,5 +1,31 @@
 angular
-  .module('addressBook', [])
+  .module('addressBook', ['ngRoute'])
+
+  .config(function($routeProvider, $locationProvider) {
+    $routeProvider
+      .when('/', {
+        templateUrl: 'views/landing.html'
+      })
+      .when('/contact', {
+        templateUrl: 'views/contact.html'
+      })
+      .when('/about', {
+        templateUrl: 'views/about.html'
+      })
+      .when('/people', {
+        templateUrl: 'views/people.html',
+        controller: 'Main',
+        controllerAs: 'main'
+      })
+      .when('/people/:id', {
+        templateUrl: 'views/person.html',
+        controller: 'PersonController',
+        controllerAs: 'person'
+      })
+      .otherwise({
+        templateURL: 'views/404.html'
+      });
+  })
 
     .filter('objToArr', function() {
       return function(obj) {
@@ -13,6 +39,17 @@ angular
         }
       }
     })
+
+  .controller('PersonController', function($http, $routeParams) {
+    var main = this;
+    var id = $routeParams.id;
+
+    $http
+      .get(`https://addressbooks.firebaseio.com/people/${id}.json`)
+      .success(function (data) {
+        main.data = data;
+      });
+  })
 
   .controller('Main', function($http) {
     var main = this;
@@ -28,10 +65,8 @@ angular
     main.addNewContact = function() {
       $http
         .post('https://addressbooks.firebaseio.com/people.json', main.newContact)
-        .success(function() {
-          console.log(main.people)
-          console.log(main.newContact)
-          main.people.push(main.newContact);
+        .success(function(res) {
+          main.people[res.name] = main.newContact;
           main.newContact = {};  //clearing the form and data-binding link
           $('#modal').modal('hide');
         });

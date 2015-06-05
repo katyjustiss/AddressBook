@@ -7,11 +7,11 @@ body {
   width: 75%;
   margin: 2% auto;
   background: rgba(255,255,255, 0.9);
-  border-radius: 15px;
   -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.32);
   -moz-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.32);
   box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.32);
   padding: 4%;
+  border-radius: 15px;
 }
 
 h1 {
@@ -20,12 +20,21 @@ h1 {
 
 .search {
   margin-top: 2%;
-  margin-bottom: 5%;
   text-align: center;
+}
+
+.contact-entry {
+  text-align: center;
+  margin: 2% auto;
 }
 
 img {
   max-width: 75px;
   max-height: 75px;
+}
+
+.person {
+  float: left;
+  margin: 20px;
 }
 
