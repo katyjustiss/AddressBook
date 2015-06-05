@@ -1,0 +1,23 @@
+table.table.table-hover.table-responsive
+  thead
+    tr
+      th
+      th Photo
+      th Name
+      th Email
+      th Twitter
+      th Phone
+  tbody
+    tr(ng-repeat="(id, contact) in main.people | objToArr | orderBy:'name' | filter:query")
+      td
+        button.btn.btn-md.btn-danger(ng-click="main.removeAddress(contact._id)") X
+      td
+        img(ng-src="{{contact.photo}}")
+      td
+        | {{contact.name}}
+      td: a(href="mailto:{{contact.email}}")
+        | {{contact.email}}
+      td: a(href="http://twitter.com/{{contact.twitter}}", target="_blank")
+        | {{contact.twitter}}
+      td: a(href="tel:{{contact.phone}}")
+        | {{contact.phone}}

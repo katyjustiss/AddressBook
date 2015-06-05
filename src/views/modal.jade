@@ -1,0 +1,27 @@
+.modal.fade#modal
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(data-dismiss="modal")
+          span &times;
+        h2 New Contact
+      .modal-body
+        form(name="newContactForm", novalidate)
+          .form-group(ng-class="{'has-success': newContactForm.n.$dirty && main.newContact.name.length > 1, 'has-error': newContactForm.n.$dirty && !main.newContact.name}")
+            label.control-label Name
+            input.form-control(name="n", type="text", placeholder="Bob", ng-model="main.newContact.name", required)
+          .form-group(ng-class="{'has-success': newContactForm.e.$dirty && main.newContact.email, 'has-error': newContactForm.e.$dirty && !main.newContact.email}")
+            label.control-label Email
+            input.form-control(name="e",type="email", placeholder="bob@abc.com", ng-model="main.newContact.email", required)
+          .form-group(ng-class="{'has-success': newContactForm.t.$dirty && main.newContact.twitter.length > 1 && main.newContact.twitter[0] === '@', 'has-error': newContactForm.t.$dirty && (main.newContact.twitter.length < 2 || main.newContact.twitter[0] !== '@')}")
+            label.control-label Twitter
+            input.form-control(name="t", type="text", placeholder="@bob", ng-model="main.newContact.twitter", required)
+          .form-group(ng-class="{'has-success': newContactForm.p.$dirty && main.newContact.phone, 'has-error': newContactForm.p.$dirty && !main.newContact.phone}")
+            label.control-label Phone
+            input.form-control(name="p", type="text", placeholder="6152222222", ng-model="main.newContact.phone", required)
+          .form-group
+            label.control-label URL
+            input.form-control(name="i", type="url", placeholder="http://google.com/img.jpg", ng-model="main.newContact.photo", required)
+      .modal-footer
+        button.btn.btn-default(data-dismiss="modal") Close
+        button.btn.btn-danger(ng-click="newContactForm.$valid && main.addNewContact()", ng-disabled="newContactForm.$invalid") Add a contact
