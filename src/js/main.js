@@ -17,26 +17,57 @@ angular
       .when('/people', {
         templateUrl: 'views/people.html',
         controller: 'Main',
-        controllerAs: 'main'
+        controllerAs: 'main',
+        private: true
       })
       .when('/people/new', {
         templateUrl: 'views/people.html',
         controller: 'NewPersonCtrl',
-        controllerAs: 'main'
+        controllerAs: 'main',
+        private: true
       })
       .when('/people/:id/edit', {
         templateUrl: 'views/person.html',
         controller: 'EditPersonCtrl',
-        controllerAs: 'main'
+        controllerAs: 'main',
+        private: true
       })
       .when('/people/:id', {
         templateUrl: 'views/person.html',
         controller: 'PersonController',
-        controllerAs: 'main'
+        controllerAs: 'main',
+        private: true
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginCtrl',
+        controllerAs: 'auth',
+        resolve: {
+          checkLogin: function ($rootScope, $location) {
+            if ($rootScope.auth) {
+              $location.path('/people')
+            }
+          }
+        }
+      })
+      .when('/logout', {
+        template: '<h1> Logging out...</h1>',
+        controller: 'LogoutCtrl',
       })
       .otherwise({
         templateURL: 'views/404.html'
       });
+  })
+
+  .run(function($rootScope, $location, API_URL) {
+    $rootScope.$on('$routeChangeStart', function(event, nextRoute) {
+      var fb = new Firebase(API_URL);
+      $rootScope.auth = fb.getAuth();
+
+      if (nextRoute.$$rouet && nextRoute.$$route.private && !$rootScope.auth) {
+        $location.path('/login')
+      }
+    });
   })
 
     .filter('objToArr', function() {
@@ -52,14 +83,70 @@ angular
       }
     })
 
+  .controller('LogoutCtrl', function ($rootScope, $scope, $location, API_URL) {
+    var fb = new Firebase(API_URL);
+
+    fb.unauth(function () {
+      $rootScope.auth = null;
+      $location.path('/login');
+      $scope.$apply();
+    });
+  })
+
+  .controller('LoginCtrl', function ($rootScope, $scope, $location, API_URL) {
+    var main = this;
+
+    main.login = function () {
+      var fb = new Firebase(API_URL);
+
+      fb.authWithPassword({
+        email: main.email,
+        password: main.password
+      }, function (err, authData) {
+        if (err) {
+          console.log('Error', err)
+        } else {
+          $rootScope.auth = authData;
+          $location.path('/people');
+          $scope.$apply();
+        }
+      });
+
+    };
+
+    main.register = function () {
+      // var fb = new Firebase(API_URL);
+      // fb.createUser({
+      //   email: main.email,
+      //   password: main.password
+      // }, function(err, userData) {
+      //   if(err) {
+      //     console.log('Error', err)
+      //   } else {
+      //     main.login();
+      //     console.log('successful')
+      //   }
+      // });
+    };
+  })
+
+
+
   //CONTROLLER for individual person's information/data
-  .controller('PersonController', function($routeParams, Person) {
+  .controller('PersonController', function($routeParams, $location, Person) {
     var main = this;
     main.id = $routeParams.id;
 
     Person.getOne(main.id, function (data) {
       main.person = data;
     })
+
+    main.destroy = function (id) {   //doesn't seem to delete from firebase
+      Person.destroy(main.id, function () {
+        $location.path('/people');
+      });
+    };
+
     main.onModalLoad = function () {};
   })
 
@@ -95,14 +182,15 @@ angular
 
 
   //CONTROLLER TO ADD PERSON INFORMATION
-  .controller('NewPersonCtrl', function(Person) {
+  .controller('NewPersonCtrl', function($scope, $location, Person) {
     var main = this;
 
     main.onModalLoad = function () {
       $('#modal').modal('show');
 
       $('#modal').on('hidden.bs.modal', function (e) {
-        window.location.href = '#/people';
+        $location.path('/people');
+        $scope.$apply();
       });
     };
 
@@ -118,7 +206,7 @@ angular
 
 
   //CONTROLLER TO EDIT PERSON INFORMATION
-  .controller('EditPersonCtrl', function ($routeParams, Person) {
+  .controller('EditPersonCtrl', function ($scope, $routeParams, $location, Person) {
     var main = this;
     main.id = $routeParams.id;
 
@@ -126,7 +214,8 @@ angular
       $('#modal').modal('show');
 
       $('#modal').on('hidden.bs.modal', function (e) {
-        window.location.href = `#/people/${main.id}`;
+        $location.path(`/people/${main.id}`);
+        $scope.$apply();
       });
     };
 
@@ -142,7 +231,7 @@ angular
   })
 
   //GETTING ALL THE PEOPLE ON LOAD
-  .controller('Main', function(Person) {
+  .controller('Main', function($rootScope, $location, Person) {
     var main = this;
 
     Person.getAll(function(people) {
