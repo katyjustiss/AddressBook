@@ -7,7 +7,7 @@ html(lang="en", ng-app="addressBook")
     title Address Book
     link(rel="stylesheet", href="/lib/build.css")
     //- link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
-    link(rel="stylesheet", href="/css/main.css")
+    link(rel="stylesheet", href="/assets/main.css")
     link(href='http://fonts.googleapis.com/css?family=Vollkorn:400,700', rel='stylesheet', type='text/css')
   body
     .container
@@ -22,6 +22,24 @@ html(lang="en", ng-app="addressBook")
       .app(ng-view)
 
     script(src="lib/build.js")
-    script(src="js/main.js")
+    script(src="assets/main.module.js")
+    script(src="assets/static/static.config.js")
+    script(src="assets/main.run.js")
+    script(src="assets/main.constants.js")
+    script(src="assets/main.filters.js")
+
+    script(src="assets/auth/auth.config.js")
+    script(src="assets/auth/login.controller.js")
+    script(src="assets/auth/logout.controller.js")
+    //- script(src="assets/auth/auth.factory.js")
+
+    script(src="assets/people/edit.controller.js")
+    script(src="assets/people/new.controller.js")
+    script(src="assets/people/people.config.js")
+    script(src="assets/people/person.controller.js")
+    script(src="assets/people/person.factory.js")
+    script(src="assets/people/people.controller.js")
+
+
 
 

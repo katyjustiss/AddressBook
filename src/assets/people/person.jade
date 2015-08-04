@@ -5,4 +5,4 @@ a(href="tel:{{main.person.phone}}") {{main.person.phone}}
 a.btn.btn-primary(href="#/people/{{main.id}}/edit") Edit Information
 a.btn.btn-danger(ng-click="main.destroy()") Delete
 
-div(ng-include="'views/modal.html'" onload="main.onModalLoad()")
+div(ng-include="'assets/people/modal.html'" onload="main.onModalLoad()")
