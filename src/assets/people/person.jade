@@ -1,8 +1,10 @@
-h1 {{main.person.name}}
-img(ng-src="{{main.person.photo}}")
-a(href="http://twitter.com/{{main.person.twitter}}", target="_blank") {{main.person.twitter}}
-a(href="tel:{{main.person.phone}}") {{main.person.phone}}
-a.btn.btn-primary(href="#/people/{{main.id}}/edit") Edit Information
-a.btn.btn-danger(ng-click="main.destroy()") Delete
+.person_container
+  h1 {{main.person.name}}
+  img.thumbnail(ng-src="{{main.person.photo}}")
+  h4: a(href="http://twitter.com/{{main.person.twitter}}", target="_blank") {{main.person.twitter}}
+  h4: a(href="tel:{{main.person.phone}}") {{main.person.phone}}
+  .button_row
+    a.btn.btn-info(href="#/people/{{main.id}}/edit") Edit Information
+    a.btn.btn-danger(ng-click="main.destroy()") Delete
 
 div(ng-include="'assets/people/modal.html'" onload="main.onModalLoad()")

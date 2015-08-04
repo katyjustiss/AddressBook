@@ -5,6 +5,7 @@ body {
 
 .container {
   width: 75%;
+  height: 800px;
   margin: 2% auto;
   background: rgba(255,255,255, 0.9);
   -webkit-box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.32);
@@ -12,6 +13,8 @@ body {
   box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.32);
   padding: 4%;
   border-radius: 15px;
+  background: #ffffff url('https://ununsplash.imgix.net/3/alejandroescamilla-book.jpg?dpr=2&fit=crop&fm=jpg&h=400&q=75&w=1050') no-repeat;
+  background-size: cover;
 }
 
 h1 {
@@ -26,4 +29,12 @@ h1 {
 .contact-entry {
   text-align: center;
   margin: 2% auto;
+}
+
+nav a {
+  color: black;
+}
+
+p a {
+  color: black;
 }

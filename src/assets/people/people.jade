@@ -3,7 +3,7 @@ h1 Address Book
   label Search
   input(placeholder="Enter term here", ng-model="query")
 .contact-entry
-  a.btn.btn-primary(href="#/people/new") Enter New Contact
+  a.btn.btn-info(href="#/people/new") Enter New Contact
 .gallery
   .person(ng-repeat="(id, person) in main.people | objToArr | orderBy:'name' | filter:query")
     a(href="/#/people/{{person._id}}")
