@@ -1,6 +1,6 @@
 # AddressBook
 
-This is an address book built with AngularJS and Firebase. I wanted to become more familiar with AngularJS and Firebase.
+During this project, I wanted to become more familiar with AngularJS and Firebase especially the incorporation of angular routes and login authorizations.
 
 ## Installation
 
