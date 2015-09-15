@@ -9,8 +9,9 @@ Components include angular, angular-route, bootstrap, firebase, jQuery, and Grun
 ## Usage
 1. Git clone 'url'
 2. cd into the directory
-3. grunt build
-4. grunt serve
+3. npm install and bower install
+4. grunt build
+5. grunt serve
 
 ## Contributing
 1. Fork it!
